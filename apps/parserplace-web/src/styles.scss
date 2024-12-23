@@ -1,0 +1,16 @@
+@use "tailwindcss";
+
+/* You can add global styles to this file, and also import other style files */
+
+@layer components {
+
+  .alert-error {
+    @apply flex p-4 bg-red-400 text-white dark:text-pink-300;
+  }
+}
+
+@layer utilities {
+  .px-default {
+    @apply px-4;
+  }
+}
