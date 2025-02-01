@@ -2,8 +2,8 @@ import {inject, Injectable} from '@angular/core'
 import {HttpClient, HttpContext, HttpHeaders, HttpParams} from '@angular/common/http'
 import {map, Observable, pipe, UnaryFunction} from 'rxjs'
 import camelcaseKeys from 'camelcase-keys'
-import {snakecaseKeys} from '@/util/snake-case-keys.js'
-import {isObject} from '@/util/util.js'
+import {isObject} from '@pp/web/util/util.js'
+import {snakecaseKeys} from '@pp/web/util/snake-case-keys.js'
 import {ApiError} from './api-error.js'
 
 /* a simple wrapper for angular http client - handles json only */

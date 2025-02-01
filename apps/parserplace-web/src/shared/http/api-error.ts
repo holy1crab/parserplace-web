@@ -1,4 +1,4 @@
-import {BaseError} from '@/shared/error.js'
+import {BaseError} from '../error'
 
 export class ApiParseError extends BaseError {
   rawBody: string

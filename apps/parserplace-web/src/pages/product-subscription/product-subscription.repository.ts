@@ -1,14 +1,17 @@
 import {inject, Injectable} from '@angular/core'
 import {map, Observable} from 'rxjs'
+import {CollectionResponse} from '@pp/web/shared/model/collection-response.js'
+import {PaginationFilter} from '@pp/web/shared/model/pagination-filter.js'
 import {ProductSubscriptionNetwork} from './network/product-subscription.network.js'
 import {NetworkProductSubscription} from './network/model/network-product-subscription.js'
 import {
   networkToPreviewAndParameters,
   PreviewAndParameters,
 } from './model/preview-and-parameters.js'
-import {ProductSubscription} from './model/product-subscription.js'
+import {networkToProductSubscription, ProductSubscription} from './model/product-subscription.js'
 import {ProductUrlWithParameters} from './model/product-url-with-parameters.js'
 import {networkToProductSubscriptionChunk} from './model/product-subscription-chunk.js'
+import {ProductSubscriptionFilter} from './product-subscription-filter.js'
 
 interface SubscriptionSave {
   subscriptionId?: number
@@ -19,6 +22,20 @@ interface SubscriptionSave {
 @Injectable({providedIn: 'root'})
 export class ProductSubscriptionRepository {
   private api = inject(ProductSubscriptionNetwork)
+
+  search(
+    filter: ProductSubscriptionFilter,
+    pagination: PaginationFilter,
+  ): Observable<CollectionResponse<ProductSubscription>> {
+    return this.api.search(filter, pagination).pipe(
+      map((response) => {
+        return {
+          total: response.total,
+          items: response.items.map((it) => networkToProductSubscription(it)),
+        }
+      }),
+    )
+  }
 
   getPreviewAndParameters(urls: string[]): Observable<PreviewAndParameters[]> {
     return this.api

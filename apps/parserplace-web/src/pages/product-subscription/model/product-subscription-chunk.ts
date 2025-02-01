@@ -1,6 +1,6 @@
+import {NetworkProductSubscriptionChunk} from '../network/model/network-product-subscription-chunk.js'
 import {networkToProduct, Product} from './product.js'
 import {ParameterKeyValue} from './product-url-with-parameters.js'
-import {NetworkProductSubscriptionChunk} from '../network/model/network-product-subscription-chunk.js'
 
 export class ProductSubscriptionChunk {
   id?: number

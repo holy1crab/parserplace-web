@@ -6,6 +6,7 @@ export interface NetworkProductSubscription {
   createdBy?: number
   updatedAt?: string
   updatedBy?: number
+  title?: string
 
   chunks?: NetworkProductSubscriptionChunk[]
 }

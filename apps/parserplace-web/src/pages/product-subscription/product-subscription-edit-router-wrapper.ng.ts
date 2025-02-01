@@ -2,7 +2,10 @@ import {Component, ChangeDetectionStrategy, inject} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 import {toSignal} from '@angular/core/rxjs-interop'
 import {map} from 'rxjs'
-import {ProductSubscriptionEdit} from './product-subscription-edit.ng.js'
+import {
+  ProductSubscriptionEdit,
+  ProductSubscriptionAfterSavedEvent,
+} from './product-subscription-edit.ng.js'
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,7 +13,7 @@ import {ProductSubscriptionEdit} from './product-subscription-edit.ng.js'
   template: `
     <app-product-subscription-edit
       [subscriptionId]="subscriptionId()"
-      (afterSaved)="handleRedirect($event.isNew, $event.subscription.id!)"
+      (afterSaved)="handleRedirect($event)"
     />
   `,
   imports: [ProductSubscriptionEdit],
@@ -27,9 +30,11 @@ export class ProductSubscriptionEditRouterWrapper {
   )
   protected subscriptionId = toSignal(this.subscriptionId$)
 
-  handleRedirect(isNew: boolean, subscriptionId: number) {
-    if (isNew && subscriptionId) {
-      this.router.navigate([`/edit/${subscriptionId}`]).then()
+  handleRedirect({subscription, isNew, triggerReload}: ProductSubscriptionAfterSavedEvent) {
+    if (isNew) {
+      this.router.navigate([`/edit/${subscription.id}`]).then()
+    } else {
+      triggerReload()
     }
   }
 }

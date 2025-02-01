@@ -1,6 +1,9 @@
 import {inject, Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
-import {ApiClient} from '@/shared/http/api-client.js'
+import {ApiClient} from '@pp/web/shared/http/api-client.js'
+import {CollectionResponse} from '@pp/web/shared/model/collection-response.js'
+import {PaginationFilter} from '@pp/web/shared/model/pagination-filter.js'
+import {ProductSubscriptionFilter} from '../product-subscription-filter.js'
 import {NetworkPreviewAndParameters} from './model/network-preview-and-parameters.js'
 import {NetworkProductSubscription} from './model/network-product-subscription.js'
 import {
@@ -11,6 +14,19 @@ import {
 @Injectable({providedIn: 'root'})
 export class ProductSubscriptionNetwork {
   private api = inject(ApiClient)
+
+  search(
+    filter: ProductSubscriptionFilter,
+    pagination: PaginationFilter,
+  ): Observable<CollectionResponse<NetworkProductSubscription>> {
+    return this.api.get<CollectionResponse<NetworkProductSubscription>>(
+      '/api/product/subscription/search',
+      {
+        params: {...filter.serializeParams(), ...pagination.asLimitOffset()},
+        camelCaseKeysResponse: {deep: true},
+      },
+    )
+  }
 
   getPreviewAndParameters(urls: string[]): Observable<NetworkPreviewAndParameters[]> {
     return this.api.post<NetworkPreviewAndParameters[]>(

@@ -1,4 +1,4 @@
-import {Site} from '@/entities/site/site.js'
+import {Site} from '@pp/web/entities/site/site.js'
 import {NetworkProduct} from '../network/model/network-product.js'
 
 export class Product {

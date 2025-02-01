@@ -1,0 +1,6 @@
+@use "tailwindcss";
+
+.btn-add {
+  --tui-background-elevation-2: theme('colors.orange.500');
+  --tui-text-primary: theme('colors.white')
+}

@@ -10,13 +10,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@parserplace-web/common": ["libs/common/src/index.ts"]
+      "@pp/annotation": [
+        "libs/annotation/src/index.ts"
+      ],
+      "@pp/common": [
+        "libs/common/src/index.ts"
+      ],
+      "@pp/web/entities/*": [
+        "apps/parserplace-web/src/entities/*"
+      ],
+      "@pp/web/shared/*": [
+        "apps/parserplace-web/src/shared/*"
+      ],
+      "@pp/web/util/*": [
+        "apps/parserplace-web/src/util/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

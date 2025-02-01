@@ -1,4 +1,4 @@
-import {NumberOption} from '@/shared/model/number-option.js'
+import {NumberOption} from '@pp/web/shared/model/number-option'
 
 export interface NetworkBaseProduct {
   title: string

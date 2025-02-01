@@ -10,7 +10,7 @@ import {
   TuiTextfieldDirective,
 } from '@taiga-ui/core'
 import {TuiCheckbox, TuiChip} from '@taiga-ui/kit'
-import {handleArrayChange} from '@/util/util.js'
+import {handleArrayChange} from '@pp/web/util/util.js'
 import {ProductSubscriptionEditStore} from '../product-subscription-edit.store.js'
 import {SubscriptionItemParameter} from '../model/preview-and-parameters.js'
 
