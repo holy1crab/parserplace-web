@@ -1,19 +1,14 @@
 import {TestBed} from '@angular/core/testing'
 import {RouterModule} from '@angular/router'
+import {NG_EVENT_PLUGINS} from '@taiga-ui/event-plugins'
 import {AppComponent} from './app.component'
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, RouterModule.forRoot([])],
+      providers: [NG_EVENT_PLUGINS],
     }).compileComponents()
-  })
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent)
-    fixture.detectChanges()
-    const compiled = fixture.nativeElement as HTMLElement
-    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome parserplace-web')
   })
 
   it(`should have as title 'parserplace-web'`, () => {

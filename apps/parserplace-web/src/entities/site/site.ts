@@ -1,6 +1,4 @@
-export enum SiteKey {
-  Vseinstrumenti = 'vseinstrumenti.ru',
-}
+export enum SiteKey {}
 
 export interface Site {
   id?: number

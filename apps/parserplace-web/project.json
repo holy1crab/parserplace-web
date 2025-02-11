@@ -1,5 +1,5 @@
 {
-  "name": "@pp/web",
+  "name": "parserplace-web",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
@@ -87,12 +87,28 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "executor": "@nx/vite:test",
       "options": {
-        "jestConfig": "apps/parserplace-web/jest.config.ts"
+        "configFile": "apps/parserplace-web/vite.config.ts"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
+    "web-test-runner": {
+      "executor": "@angular-devkit/build-angular:web-test-runner",
+      "options": {
+        "polyfills": [
+          "zone.js",
+          "zone.js/testing"
+        ],
+        "tsConfig": "apps/parserplace-web/tsconfig.spec.json",
+        "scripts": [],
+        "include": [
+          "apps/parserplace-web/src/**/*.spec.ts"
+        ]
       }
     },
     "serve-static": {

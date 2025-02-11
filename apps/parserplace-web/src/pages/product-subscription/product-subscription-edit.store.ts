@@ -24,6 +24,8 @@ interface ProductPreviewState {
   data?: PreviewAndParameters
 }
 
+export type UrlValid = {valid: true} | {valid: false; error: string}
+
 const productPreviewInitState: ProductPreviewState = {
   loading: false,
 }
@@ -34,14 +36,10 @@ export class ProductSubscriptionEditStore {
 
   #productSubscriptionRepository = inject(ProductSubscriptionRepository)
 
-  linkControl = this.#fb.control(
-    // 'https://www.vseinstrumenti.ru/product/metallicheskoe-vedro-tara-20l-sinij-kryshka-obruch-17195-1213654/',
-    '',
-    {
-      nonNullable: true,
-      validators: [Validators.maxLength(512), Validators.required],
-    },
-  )
+  public linkControl = this.#fb.control('', {
+    nonNullable: true,
+    validators: [Validators.maxLength(512), Validators.required],
+  })
 
   #linkChanged$ = this.linkControl.valueChanges.pipe(
     // skip(1),
@@ -64,12 +62,13 @@ export class ProductSubscriptionEditStore {
     ),
   )
 
-  // reading
   readonly #previewState = toSignal(this.#previewState$, {initialValue: productPreviewInitState})
-  readonly linkValidity = toSignal(this.#linkValidity$)
-  readonly loading = computed(() => this.#previewState()?.loading)
-  readonly previewAndParameters = computed(() => this.#previewState()?.data)
-  readonly error = computed(() => this.#previewState().error)
+
+  // reading
+  public readonly linkValidity = toSignal(this.#linkValidity$)
+  public readonly loading = computed(() => this.#previewState()?.loading)
+  public readonly previewAndParameters = computed(() => this.#previewState()?.data)
+  public readonly error = computed(() => this.#previewState().error)
 
   // set
   readonly parameterToValue = signal<ParameterKeyToValue>({})
@@ -96,7 +95,7 @@ export class ProductSubscriptionEditStore {
     )
   }
 
-  private isUrlValid(url: string): {valid: true} | {valid: false; error: string} {
+  private isUrlValid(url: string): UrlValid {
     if (url.length < 4) {
       return {error: 'The url is too short', valid: false}
     }

@@ -15,8 +15,17 @@
     "src/**/*.d.ts"
   ],
   "exclude": [
+    // jest
     "jest.config.ts",
+    // vite
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts",
+    // test
     "src/**/*.test.ts",
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts",
+    // config
+    "src/test-setup.ts"
   ]
 }

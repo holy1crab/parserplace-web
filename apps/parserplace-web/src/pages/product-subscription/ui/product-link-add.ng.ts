@@ -20,7 +20,12 @@ import {ProductSubscriptionPreview} from './product-subscription-preview.ng.js'
   selector: 'app-product-link-add',
   template: `
     <tui-textfield class="mb-2">
-      <label tuiLabel>{{label() || 'Enter a link'}}</label>
+      <label
+        tuiLabel
+        data-testid="product-link-label"
+      >
+        {{label() || 'Enter a link'}}
+      </label>
       <input
         tuiTextfield
         [formControl]="linkControl"
@@ -72,6 +77,7 @@ import {ProductSubscriptionPreview} from './product-subscription-preview.ng.js'
           appearance="outline"
           [disabled]="!allParametersValid()"
           (click)="emitSave()"
+          data-testid="btn-save"
         >
           {{'Save'}}
         </button>
@@ -102,6 +108,7 @@ export class ProductLinkAdd {
   readonly linkValidity = this.store.linkValidity
   readonly error = this.store.error
   readonly preview = this.store.previewAndParameters
+
   readonly product = computed(() => this.preview()?.product)
   readonly parameters = computed(() => this.preview()?.parameters)
 
