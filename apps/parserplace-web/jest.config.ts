@@ -1,26 +1,44 @@
-import type {Config} from 'jest'
+import {readFile} from 'fs/promises'
+import {dirname, join} from 'path'
+import presets from 'jest-preset-angular/presets'
+import {pathsToModuleNameMapper, type JestConfigWithTsJest} from 'ts-jest'
 
-export default {
-  displayName: 'parserplace-web',
-  preset: '../../jest.preset.js',
-  testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/apps/parserplace-web',
-  // extensionsToTreatAsEsm: ['.ts'],
-  transform: {
-    '^.+\\.(ts|mjs|js|html)$': [
-      'jest-preset-angular',
-      {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.(html|svg)$',
-        // useESM: true,
-      },
-    ],
-  },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
-  snapshotSerializers: [
-    'jest-preset-angular/build/serializers/no-ng-attributes',
-    'jest-preset-angular/build/serializers/ng-snapshot',
-    'jest-preset-angular/build/serializers/html-comment',
-  ],
-} satisfies Config
+async function getPaths(): Promise<Record<string, string[]>> {
+  const pathsFile = join(dirname(dirname(__dirname)), 'tsconfig.base.json')
+  const tsConfigData = JSON.parse(await readFile(pathsFile, {encoding: 'utf-8', flag: 'r'}))
+  return tsConfigData?.compilerOptions?.paths || {}
+}
+
+export default async () => {
+  const esmPreset = presets.createEsmPreset()
+
+  console.log('refresh config')
+
+  return {
+    ...esmPreset,
+    displayName: 'parserplace-web',
+    moduleNameMapper: {
+      ...esmPreset.moduleNameMapper,
+      '^rxjs': '<rootDir>/../../node_modules/rxjs/dist/bundles/rxjs.umd.js',
+      ...pathsToModuleNameMapper(await getPaths(), {prefix: '<rootDir>/../..', useESM: true}),
+      // imports end with ".js" extension
+      // '^(\\./.+|\\../.+|\\@pp/.+).js$': '$1',
+    },
+    moduleFileExtensions: ['ts', 'js'],
+    extensionsToTreatAsEsm: ['.ts'],
+    setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+    // transformIgnorePatterns: [`node_modules/(?!@angular|@ngneat/spectator|tslib)`],
+    transformIgnorePatterns: ['node_modules/(?!tslib)'],
+    // explicitly copy here from preset
+    transform: {
+      '^.+\\.(ts|js|html|svg)$': [
+        'jest-preset-angular',
+        {
+          tsconfig: '<rootDir>/tsconfig.spec.json',
+          stringifyContentPathRegex: '\\.(html|svg)$',
+          useESM: true,
+        },
+      ],
+    },
+  } satisfies JestConfigWithTsJest
+}

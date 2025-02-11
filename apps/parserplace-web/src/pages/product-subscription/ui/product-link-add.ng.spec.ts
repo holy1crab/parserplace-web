@@ -1,9 +1,11 @@
 import {signal} from '@angular/core'
 import {FormControl} from '@angular/forms'
-import {byTestId, createComponentFactory, Spectator} from '@ngneat/spectator/vitest'
+import {byTestId, createComponentFactory, Spectator} from '@ngneat/spectator/jest'
 import {ProductSubscriptionEditStore, UrlValid} from '../product-subscription-edit.store.js'
 import {PreviewAndParameters} from '../model/preview-and-parameters.js'
 import {ProductLinkAdd} from './product-link-add.ng.js'
+// import {Product} from '../model/product.js'
+// import {vi} from 'vitest'
 
 const mockProductSubscriptionEditStore = {
   linkControl: new FormControl('', {nonNullable: true}),
@@ -21,13 +23,13 @@ describe('ProductLinkAdd', () => {
 
   const createComponent = createComponentFactory({
     component: ProductLinkAdd,
-    mocks: [ProductSubscriptionEditStore],
-    // providers: [
-    //   {
-    //     provide: ProductSubscriptionEditStore,
-    //     useValue: mockProductSubscriptionEditStore,
-    //   },
-    // ],
+    // mocks: [ProductSubscriptionEditStore],
+    providers: [
+      {
+        provide: ProductSubscriptionEditStore,
+        useValue: mockProductSubscriptionEditStore,
+      },
+    ],
   })
 
   beforeEach(() => {
@@ -51,4 +53,31 @@ describe('ProductLinkAdd', () => {
   // it('should display an error', () => {
   //   store.linkControl.setValue('value', {emitEvent: false})
   // })
+
+  /*it('should not emit `save` when there are parameters', () => {
+    // console.log('>>>>>>>>>> 1')
+    const store = spectator.inject(ProductSubscriptionEditStore)
+    store.previewAndParameters.and.returnValue(
+      signal<PreviewAndParameters>({
+        product: new Product(),
+        url: '',
+        parameters: [{title: 'sample', key: 'key', multiple: false, options: []}],
+      }),
+    )
+    console.log('>>>>>>>>>', store.previewAndParameters())
+    // vi.mock(component.save)
+    // vi.spyOn(component.save, 'emit')
+    // createSpyObject(store)
+    // store.previewAndParameters.andReturn(
+    //   signal<PreviewAndParameters>({
+    //     url: '',
+    //     product: new Product(),
+    //     parameters: [],
+    //   }),
+    // )
+    // const button = spectator.query(byTestId('btn-save')) as HTMLButtonElement
+    // button?.click()
+    // console.log(3)
+    // expect(component.save.emit).toHaveBeenCalledTimes(0)
+  })*/
 })

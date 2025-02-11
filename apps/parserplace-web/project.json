@@ -87,14 +87,12 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
-        "configFile": "apps/parserplace-web/vite.config.ts"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
+        "jestConfig": "apps/parserplace-web/jest.config.ts"
       }
     },
     "web-test-runner": {

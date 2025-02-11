@@ -10,6 +10,8 @@
     "unused-imports": "nx generate @angular/core:cleanup-unused-imports",
     "dev": "nx serve parserplace-web",
     "test": "nx test parserplace-web --watch",
+    "test:jest": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js -c=apps/parserplace-web/jest.config.ts --watch --no-cache",
+    "test:jest:nowatch": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest.js -c=apps/parserplace-web/jest.config.ts --no-cache",
     "web-test-runner": "nx run parserplace-web:web-test-runner",
     "web-test-runner:watch": "nx run parserplace-web:web-test-runner --watch"
   },
