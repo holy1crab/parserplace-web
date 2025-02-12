@@ -1,5 +1,5 @@
 /// <reference types='vitest' />
-import {defineConfig} from 'vite'
+import {defineConfig, searchForWorkspaceRoot} from 'vite'
 import angular from '@analogjs/vite-plugin-angular'
 import {nxViteTsPaths} from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
 import {nxCopyAssetsPlugin} from '@nx/vite/plugins/nx-copy-assets.plugin'
@@ -13,15 +13,20 @@ export default defineConfig(({mode}) => {
     // worker: {
     //  plugins: [ nxViteTsPaths() ],
     // },
+    server: {
+      fs: {
+        allow: [searchForWorkspaceRoot(process.cwd())],
+      },
+    },
     test: {
+      // default is `threads` but it was crashing (segmentation fault code 139)
+      // https://github.com/vitest-dev/vitest/issues/3143
+      pool: 'forks',
       globals: true,
       environment: 'jsdom',
       setupFiles: ['src/test-setup.ts'],
-      include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      // include: ['**/*.spec.ts'],
-      // reporters: ['default'],
-      reporters: ['verbose'],
-      // inline @ngneat/spectator
+      include: ['src/**/*.spec.{js,ts}'],
+      reporters: ['default'],
       server: {
         deps: {
           inline: ['@ngneat/spectator'],
@@ -30,6 +35,7 @@ export default defineConfig(({mode}) => {
       coverage: {
         reportsDirectory: '../../coverage/apps/parserplace-web',
         provider: 'v8',
+        reporter: ['text', 'json', 'html', 'clover'],
       },
     },
     define: {
