@@ -66,12 +66,12 @@ export class ProductSubscriptionEditStore {
 
   // reading
   public readonly linkValidity = toSignal(this.#linkValidity$)
-  public readonly loading = computed(() => this.#previewState()?.loading)
-  public readonly previewAndParameters = computed(() => this.#previewState()?.data)
+  public readonly loading = computed(() => this.#previewState().loading)
+  public readonly previewAndParameters = computed(() => this.#previewState().data)
   public readonly error = computed(() => this.#previewState().error)
 
   // set
-  readonly parameterToValue = signal<ParameterKeyToValue>({})
+  public readonly parameterToValue = signal<ParameterKeyToValue>({})
 
   resetLinkControl() {
     this.linkControl.reset()

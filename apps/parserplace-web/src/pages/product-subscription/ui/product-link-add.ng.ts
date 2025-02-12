@@ -10,6 +10,7 @@ import {
 import {ReactiveFormsModule} from '@angular/forms'
 import {TuiButton, TuiLabel, TuiTextfieldComponent, TuiTextfieldDirective} from '@taiga-ui/core'
 import {TuiProgressBar} from '@taiga-ui/kit'
+import {isNullOrUndefined} from '@pp/web/util/util.js'
 import {ProductUrlWithParameters} from '../model/product-url-with-parameters.js'
 import {ProductSubscriptionEditStore} from '../product-subscription-edit.store.js'
 import {ProductSubscriptionParameter} from './product-subscription-parameter.ng.js'
@@ -55,15 +56,15 @@ import {ProductSubscriptionPreview} from './product-subscription-preview.ng.js'
 
     @if (preview()) {
       <div class="flex-col">
-        @let parameters = preview()!.parameters;
+        @let params = parameters();
 
         <app-product-subscription-preview
           [product]="preview()!.product"
         ></app-product-subscription-preview>
 
-        @if (parameters.length) {
+        @if (params.length) {
           <div class="bg-gray-100 p-4">
-            @for (param of parameters; track param.key) {
+            @for (param of params; track param.key) {
               <app-product-subscription-parameter [parameter]="param" />
             }
           </div>
@@ -110,15 +111,15 @@ export class ProductLinkAdd {
   readonly preview = this.store.previewAndParameters
 
   readonly product = computed(() => this.preview()?.product)
-  readonly parameters = computed(() => this.preview()?.parameters)
+  readonly parameters = computed(() => this.preview()?.parameters || [])
 
   readonly allParametersValid = computed(() => {
     return (
-      !this.parameters()?.length ||
-      this.parameters()?.every((it) => {
+      !this.parameters().length ||
+      this.parameters().every((it) => {
         const keyToValue = this.store.parameterToValue()
         const value = keyToValue[it.key]
-        return Array.isArray(value) ? value.length > 0 : value
+        return Array.isArray(value) ? value.length > 0 : !isNullOrUndefined(value)
       })
     )
   })
@@ -134,15 +135,16 @@ export class ProductLinkAdd {
   }
 
   emitSave() {
-    const parameters = this.parameters()
-    const keyToValue = this.store.parameterToValue()
-    if (!parameters) {
+    const prev = this.preview()
+    if (!prev) {
       return
     }
 
+    const keyToValue = this.store.parameterToValue()
+
     this.save.emit({
-      url: this.linkControl.value,
-      parameters: parameters.map((param) => ({
+      url: prev.url,
+      parameters: prev.parameters.map((param) => ({
         key: param.key,
         value: keyToValue[param.key],
       })),
