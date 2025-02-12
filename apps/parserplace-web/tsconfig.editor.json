@@ -6,7 +6,6 @@
   "compilerOptions": {},
   "exclude": [
     "vite.config.ts",
-    "jest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts"
   ]

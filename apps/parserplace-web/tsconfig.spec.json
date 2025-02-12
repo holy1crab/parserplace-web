@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "types": [
       "node",
-      "jasmine",
+//      "jasmine",
       "vitest/globals",
       "vitest/importMeta",
       "vite/client",

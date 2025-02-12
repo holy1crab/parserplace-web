@@ -15,8 +15,6 @@
     "src/**/*.d.ts"
   ],
   "exclude": [
-    // jest
-    "jest.config.ts",
     // vite
     "vite.config.ts",
     "vite.config.mts",
